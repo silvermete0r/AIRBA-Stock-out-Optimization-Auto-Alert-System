@@ -1,3 +1,6 @@
+# Team 200: AIRBA Technodom Case Championship 2025 (march)
+# ~ Streamlit dashboard for stock-out optimization with AI analysis
+
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -5,7 +8,7 @@ import google.generativeai as genai
 import json
 from datetime import timedelta
 
-# Load data
+# ===== Load data =====
 sales_data = {
     'top1': pd.read_csv('data/sales/top1_item_sales_h1_2025.csv'),
     'top2': pd.read_csv('data/sales/top2_item_sales_h1_2025.csv'),
@@ -33,10 +36,10 @@ item_names = {
 st.set_page_config(layout="wide")
 st.title('📦 AIRBA Technodom: Stock-Out Optimization Dashboard')
 
-# Select top item
+# ===== Select top item =====
 selected_top = st.selectbox("Выберите товар:", options=list(item_names.keys()), format_func=lambda x: item_names[x])
 
-# Merge sales and stocks
+# ===== Merge sales and stocks =====
 sales_df = sales_data[selected_top].rename(columns={"Quantity": "Sales"})
 stocks_df = stocks_data[selected_top].rename(columns={"Quantity": "Stocks"})
 
@@ -45,7 +48,7 @@ merged["Дата"] = pd.to_datetime(merged["Дата"])
 merged = merged.sort_values("Дата")
 merged["Delta"] = merged["Stocks"] - merged["Sales"]
 
-# Plotly line chart with highlighting
+# ===== Plotly line chart with highlighting =====
 fig = px.line(merged, x="Дата", y=["Sales", "Stocks"],
               labels={"value": "Количество", "variable": "Показатель"},
               title=f"Прогноз продаж и остатков — {item_names[selected_top]}")
@@ -59,13 +62,13 @@ fig.add_scatter(x=critical_df["Дата"], y=critical_df["Stocks"],
 
 st.plotly_chart(fig, use_container_width=True)
 
-# Show Delta(t) values
+# ===== Show Delta(t) values =====
 with st.expander("📉 Показать расчёт дисбаланса Δ(t)"):
     st.latex(r"\Delta(t) = \text{Stocks}(t + \tau) - \text{Sales}(t)")
     st.latex(r"\text{Цель:} \quad \min_{\tau} \, \mathbb{E}[|\Delta(t)|]")
     st.dataframe(merged[["Дата", "Sales", "Stocks", "Delta"]].round(2), use_container_width=True)
 
-# Smart analysis per item
+# ===== Smart analysis per item =====
 if st.button("🧠 Smart Analysis"):
     result_json = {}
     for key in item_names:
