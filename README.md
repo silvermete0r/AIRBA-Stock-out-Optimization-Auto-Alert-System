@@ -4,6 +4,8 @@
 
 **🔗 Ссылка на демо:** [airba-stock-out-optimization-system.streamlit.app](https://airba-stock-out-optimization-system.streamlit.app/)
 
+**🔗 Ссылка на short-summary:** [airba-short-summary.pdf](/AIRBA%20Case%20Championship%202025.pdf)
+
 ![image](https://github.com/user-attachments/assets/a8124b9a-60d2-4cd2-9b6f-aa5e4387859a)
 
 ![image](https://github.com/user-attachments/assets/d0a44dd9-225c-4c95-b943-1c0c80506b55)
